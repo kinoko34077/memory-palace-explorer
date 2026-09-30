@@ -7,13 +7,13 @@ type AppInfo = {
   implementationSlice: "I0";
 };
 
-const status = document.querySelector<HTMLElement>("#backend-status");
+const statusElement = document.querySelector<HTMLElement>("#backend-status");
 
-if (!status) {
+if (!statusElement) {
   throw new Error("Missing #backend-status element");
 }
 
-async function renderBackendStatus(): Promise<void> {
+async function renderBackendStatus(status: HTMLElement): Promise<void> {
   status.dataset.state = "loading";
   status.textContent = "Connecting to the Rust backend…";
 
@@ -30,4 +30,4 @@ async function renderBackendStatus(): Promise<void> {
   }
 }
 
-void renderBackendStatus();
+void renderBackendStatus(statusElement);
