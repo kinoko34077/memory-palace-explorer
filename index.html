@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Memory Palace Explorer v0.1 scaffold"
+    />
+    <title>Memory Palace Explorer</title>
+  </head>
+  <body>
+    <main id="app" class="app-shell">
+      <header class="app-header">
+        <p class="eyebrow">v0.1 · I0 boundary proof</p>
+        <h1>Memory Palace Explorer</h1>
+      </header>
+
+      <section class="status-card" aria-labelledby="backend-title">
+        <h2 id="backend-title">Backend bridge</h2>
+        <p id="backend-status" data-state="loading" aria-live="polite">
+          Connecting to the Rust backend…
+        </p>
+      </section>
+
+      <p class="scope-note">
+        This scaffold does not read, move, rename, trash, or watch user files.
+      </p>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

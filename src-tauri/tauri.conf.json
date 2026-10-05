@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Memory Palace Explorer",
+  "version": "0.1.0",
+  "identifier": "io.github.kinoko34077.memory-palace-explorer",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:5173",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "Memory Palace Explorer",
+        "width": 1100,
+        "height": 720,
+        "minWidth": 720,
+        "minHeight": 480
+      }
+    ],
+    "security": {
+      "capabilities": ["main"]
+    }
+  },
+  "bundle": {
+    "active": false
+  }
+}

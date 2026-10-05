@@ -1,0 +1,83 @@
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Install Linux prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            curl \
+            file \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            libssl-dev \
+            libwebkit2gtk-4.1-dev \
+            libxdo-dev \
+            patchelf \
+            wget
+
+      - name: Set up Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "22.23.2"
+          cache: npm
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable action observed in I0 artifact run
+        with:
+          toolchain: "1.98.1"
+          components: rustfmt
+
+      - name: Cache Rust
+        uses: swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2 observed in I0 artifact run
+        with:
+          workspaces: "./src-tauri -> target"
+
+      - name: Verify recovered lockfile provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git hash-object package-lock.json)" = "dab537e2535140818726d4a7c0d3400429f22cc2"
+          test "$(git hash-object src-tauri/Cargo.lock)" = "89bfd1764af496a816b7e1d63163161ccd76545f"
+
+      - name: Install frontend dependencies from committed lock
+        run: npm ci
+
+      - name: Verify frontend and capability boundary
+        run: npm run check
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Check Rust formatting
+        run: cargo fmt --manifest-path src-tauri/Cargo.toml -- --check
+
+      - name: Test Rust from committed lock
+        run: cargo test --manifest-path src-tauri/Cargo.toml --locked
+
+      - name: Check Rust from committed lock
+        run: cargo check --manifest-path src-tauri/Cargo.toml --locked
+
+      - name: Verify lockfiles did not drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- package-lock.json src-tauri/Cargo.lock

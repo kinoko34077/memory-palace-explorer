@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main",
+  "description": "I0 main-window capability. Intentionally excludes generic filesystem permissions.",
+  "windows": ["main"],
+  "permissions": ["core:app:default"]
+}
