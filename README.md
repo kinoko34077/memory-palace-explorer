@@ -9,7 +9,7 @@ A local file explorer that maps filesystem navigation and manipulation onto a li
 - Files are manipulable scene items.
 - The hand-item/inventory area is fused with the taskbar.
 - Backgrounds are photographic images; scene items use icon images and intentionally simple pseudo-3D presentation.
-- Per-directory presentation metadata is planned as a hidden JSON file (working name `data.json`).
+- The v0.1 per-directory presentation metadata contract is planned as a hidden JSON sidecar named `.memory-palace-explorer.json` (strict UTF-8 JSON with `schemaVersion: 1`); I0 does not implement it yet.
 - File placement, movement and deletion correspond to real filesystem operations rather than a disconnected virtual world.
 
 Detailed requirements and the v0.1 acceptance slice are tracked in the repository-local Initial scope issue.
